@@ -31,9 +31,25 @@ if (req.session.authorization) {
 }
 });
  
-const PORT =5000;
+const PORT = 5000;
 
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
 
-app.listen(PORT,()=>console.log("Server is running"));
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+
+    // --- AUTOMATIC LIVE TESTING FOR TASKS 10-13 ---
+    const axiosTasks = require('./router/general.js');
+
+    // Wait 2 seconds for the server to fully initialize, then run all tasks
+    setTimeout(() => {
+        console.log("\n=================== RUNNING AXIOS ASYNC TESTS ===================");
+        
+        axiosTasks.getAllBooks();                  // Task 10
+        axiosTasks.getBookByISBN("1");             // Task 11
+        axiosTasks.getBooksByAuthor("Jane Austen"); // Task 12
+        axiosTasks.getBooksByTitle("Fairy tales");  // Task 13
+        
+    }, 2000);
+});
